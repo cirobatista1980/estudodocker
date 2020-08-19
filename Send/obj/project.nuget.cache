@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "wbfQRUq1wOnH1iP0crV2eeqSU/RUM5KasPkwnvdjLK6GTXzxWXn3y4jgdPz+xkrB/ieCJFX45b4NZTy7w7fnPA==",
+  "success": true,
+  "projectFilePath": "C:\\src\\dotnet\\docker\\Send\\Send.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bc0025\\.nuget\\packages\\rabbitmq.client\\6.1.0\\rabbitmq.client.6.1.0.nupkg.sha512",
+    "C:\\Users\\bc0025\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\bc0025\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
+    "C:\\Users\\bc0025\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}
