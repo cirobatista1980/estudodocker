@@ -1,0 +1,49 @@
+version: '3.4'
+
+# Please refer https://docs.docker.com/compose to learn more about Docker Compose.
+
+# This is a sample docker-compose file with two services
+# 1. yourwebapp is an sample web service where the docker container image will be built from the Dockerfile as
+#    part of starting the compose.
+# 2. redis is an existing image hosted in docker hub.
+version: '3.4'
+
+services:
+  webapi:
+    image: webapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5001
+    depends_on: 
+      - redis
+
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - "6379:6379"
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+
+  sender:
+    image: sender
+    build:
+      context: ../Send/
+      dockerfile: Dockerfile
+    depends_on: 
+      - rabbitmq
+      - webapi
+
+  receiver:
+    image: receiver
+    build:
+      context: ../Receive/
+      dockerfile: Dockerfile
+    depends_on: 
+      - redis
+      - rabbitmq
+
+# docker-compose -f docker-compose.yml up -d --build

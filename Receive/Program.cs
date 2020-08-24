@@ -18,7 +18,7 @@ namespace Receive
         
         static void Main(string[] args)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "rabbitmq" };
             using (var connection = factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())
@@ -52,7 +52,7 @@ namespace Receive
         private static void SaveRedis(WeatherForecast tempo)
         {
             var rng = new Random();
-            ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
+            ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("redis");
             IDatabase conn = muxer.GetDatabase();
 
             var Summary = Summaries[rng.Next(Summaries.Length)];
