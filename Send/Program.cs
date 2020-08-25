@@ -15,7 +15,13 @@ namespace Send
         private static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+            var factory = new ConnectionFactory() 
+            { 
+                HostName = "localhost",
+                Port = 5672,
+                UserName = "testes",
+                Password = "RabbitMQ2019!"
+            };
             using (var connection = factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())
@@ -44,7 +50,7 @@ namespace Send
 
         private static async Task<List<WeatherForecast>> GetMessage()
         {
-            var streamTask = client.GetStreamAsync("https://webapi:5001/WeatherForecast/");
+            var streamTask = client.GetStreamAsync("http://localhost:5000/WeatherForecast/");
             var models = await JsonSerializer.DeserializeAsync<List<WeatherForecast>>(await streamTask);
             return models;
         }

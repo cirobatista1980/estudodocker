@@ -18,7 +18,14 @@ namespace Receive
         
         static void Main(string[] args)
         {
-            var factory = new ConnectionFactory() { HostName = "rabbitmq" };
+            var factory = new ConnectionFactory() 
+            { 
+                HostName = "localhost",
+                Port = 5672,
+                UserName = "testes",
+                Password = "RabbitMQ2019!"
+            };
+
             using (var connection = factory.CreateConnection())
             {
                 using (var channel = connection.CreateModel())

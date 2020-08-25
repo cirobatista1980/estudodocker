@@ -15,7 +15,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 5001:5001
+      - 5000:80
+      - 5001:443
+    networks:
+      - lab-network
     depends_on: 
       - redis
 
@@ -24,15 +27,27 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
+    networks:
+      - lab-network
   
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: "testes"
+      RABBITMQ_DEFAULT_PASS: "RabbitMQ2019!"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - lab-network
 
   sender:
     image: sender
     build:
       context: ../Send/
       dockerfile: Dockerfile
+    networks:
+      - lab-network
     depends_on: 
       - rabbitmq
       - webapi
@@ -42,8 +57,13 @@ services:
     build:
       context: ../Receive/
       dockerfile: Dockerfile
+    networks:
+      - lab-network
     depends_on: 
       - redis
       - rabbitmq
 
+networks: 
+  lab-network:
+      driver: bridge
 # docker-compose -f docker-compose.yml up -d --build
