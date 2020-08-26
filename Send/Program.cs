@@ -17,7 +17,7 @@ namespace Send
         {
             var factory = new ConnectionFactory() 
             { 
-                HostName = "localhost",
+                HostName = "rabbitmq",
                 Port = 5672,
                 UserName = "testes",
                 Password = "RabbitMQ2019!"
@@ -50,7 +50,7 @@ namespace Send
 
         private static async Task<List<WeatherForecast>> GetMessage()
         {
-            var streamTask = client.GetStreamAsync("http://localhost:5000/WeatherForecast/");
+            var streamTask = client.GetStreamAsync("http://webapi/WeatherForecast/");
             var models = await JsonSerializer.DeserializeAsync<List<WeatherForecast>>(await streamTask);
             return models;
         }

@@ -20,7 +20,7 @@ namespace Receive
         {
             var factory = new ConnectionFactory() 
             { 
-                HostName = "localhost",
+                HostName = "rabbitmq",
                 Port = 5672,
                 UserName = "testes",
                 Password = "RabbitMQ2019!"
