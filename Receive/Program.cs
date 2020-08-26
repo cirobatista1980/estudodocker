@@ -4,22 +4,16 @@ using System;
 using System.Text;
 using StackExchange.Redis;
 using System.Text.Json;
-using System.Collections.Generic;
 
 namespace Receive
 {
     class Program
     {
-        private const string QUENE = "tempo";
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-        
+        private const string queueName = "tempo";
         static void Main(string[] args)
         {
-            var factory = new ConnectionFactory() 
-            { 
+            var factory = new ConnectionFactory()
+            {
                 HostName = "rabbitmq",
                 Port = 5672,
                 UserName = "testes",
@@ -30,42 +24,42 @@ namespace Receive
             {
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: QUENE,
+                    channel.QueueDeclare(queue: queueName,
                                          durable: false,
                                          exclusive: false,
                                          autoDelete: false,
                                          arguments: null);
-                    
+
+
                     var consumer = new EventingBasicConsumer(channel);
 
                     consumer.Received += (model, ea) =>
                     {
                         var body = ea.Body.ToArray();
                         var message = Encoding.UTF8.GetString(body);
-                        var lista = JsonSerializer.Deserialize<List<WeatherForecast>>(message);
-                        foreach (var item in lista)
-                        {
-                            SaveRedis(item);
-                        }
+                        var item = JsonSerializer.Deserialize<WeatherForecast>(message);
+                        SaveRedis(item);
+
+                        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                     };
 
-                    channel.BasicConsume(queue: QUENE,
-                                         autoAck: true,
+                    channel.BasicConsume(queue: queueName,
+                                         autoAck: false,
                                          consumer: consumer);
+
+                    
+                    Console.ReadLine();
                 }
             }
         }
 
         private static void SaveRedis(WeatherForecast tempo)
         {
-            var rng = new Random();
             ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("redis");
             IDatabase conn = muxer.GetDatabase();
-
-            var Summary = Summaries[rng.Next(Summaries.Length)];
             var json = JsonSerializer.Serialize(tempo);
 
-            conn.StringSet(Summary,json);
+            conn.StringSet(tempo.summary, json);
         }
     }
 }
