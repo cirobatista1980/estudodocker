@@ -34,8 +34,11 @@ namespace webapi.Controllers
             foreach(var item in Summaries)
             {
                 string valorJSON = cache.GetString(item);
-                var items = JsonSerializer.Deserialize<List<WeatherForecast>>(valorJSON);
-                lista.AddRange(items);
+                if (!string.IsNullOrWhiteSpace(valorJSON)){
+                    var items = JsonSerializer.Deserialize<List<WeatherForecast>>(valorJSON);
+                    lista.AddRange(items);
+                }
+                
             }
             return lista;
         }

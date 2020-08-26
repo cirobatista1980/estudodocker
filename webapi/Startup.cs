@@ -29,6 +29,7 @@ namespace webapi
             {
                 options.Configuration =
                     Configuration.GetConnectionString("ConexaoRedis");
+                    options.InstanceName = "APITempo-";
             });
 
             services.AddControllers();

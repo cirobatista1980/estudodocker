@@ -44,7 +44,7 @@ namespace Receive
                     };
 
                     channel.BasicConsume(queue: queueName,
-                                         autoAck: false,
+                                         autoAck: true,
                                          consumer: consumer);
 
                     
