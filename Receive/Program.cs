@@ -39,7 +39,6 @@ namespace Receive
                         var message = Encoding.UTF8.GetString(body);
                         var item = JsonSerializer.Deserialize<WeatherForecast>(message);
                         SaveRedis(item);
-
                         channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                     };
 

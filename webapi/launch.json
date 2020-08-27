@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch .NET Core in Docker",
+        "type": "docker",
+        "request": "launch",
+        "preLaunchTask": "Run Docker Container",
+        "netCore": {
+          "appProject": "${workspaceFolder}/webapi.csproj"
+        }
+      }
+    ]
+  }
